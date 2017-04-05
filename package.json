@@ -1,0 +1,17 @@
+{
+  "name": "plans",
+  "version": "1.0.0",
+  "description": "A social media app just for events",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Aishwarya Verghese & Hrishikesh Mulabagula",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "express-session": "^1.15.2",
+    "neo4j": "^2.0.0-RC2"
+  }
+}
