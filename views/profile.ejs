@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Plans</title>
+  </head>
+  <body>
+    <% include partials/nav.ejs %>
+    <h3>Profile</h3>
+    <% if(me){ %>
+      <p>Welcome <%= user.firstName %>!</p>
+    <% } else { %>
+      <p>Welcome to <%= user.firstName %>'s profile!</p>
+    <% } %>
+    <!--<button type="" >Add Friend</button> <!--TODO: 1. Invisible if persons profile
+                                          2. A Friends check if friends
+                                          3. A request sent check if request sent
+                                          4. An Accept Friend Request button if invitation sent-->
+  </body>
+</html>

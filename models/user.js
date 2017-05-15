@@ -43,6 +43,7 @@ User.prototype.getUser = function(user_email,user_pwd,result_cb){
 }
 
 User.prototype.getUserData = function(user_id,result_cb){
+  console.log("User ID in user.js: ", user_id);
       db.cypher({
         query: 'Match (u) Where ID(u)={id} Return u',
         params: {
@@ -50,9 +51,41 @@ User.prototype.getUserData = function(user_id,result_cb){
               },
             }, function (err, results) {
       if (err)
-        throw err;
-      var result = results[0]['u'];
-      result_cb(result);
+      {
+        result_cb(new Error(err));
+      }
+      else {
+        var result = results[0];
+        if(result)
+          result = result['u'];
+        result_cb(null,result);
+      }
+  });
+}
+
+User.prototype.searchUser = function(search_string,result_cb){
+      db.cypher({
+        query: 'Match (u:User) '
+                +'where u.firstName =~ \'(?i).*' + search_string + '.*\' '
+                + 'OR u.lastName =~ \'(?i).*' + search_string + '.*\' '
+                + 'OR u.email =~ \'(?i).*' + search_string + '.*\''
+                + 'return u;',
+        params: {
+              },
+            }, function (err, results) {
+              if (err)
+              {
+                result_cb(new Error(err));
+              }
+              else {
+                var Users = [];
+                for(var i in results)
+                {
+                  var user = {id: results[i].u._id,firstName: results[i].u.properties.firstName, lastName: results[i].u.properties.lastName};
+                  Users.push(user);
+                }
+                result_cb(null,Users);
+              }
   });
 }
 

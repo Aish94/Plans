@@ -9,6 +9,7 @@ const session = require('express-session');
 const app = express();
 //const urlencodedParser = bodyParser.urlencoded({ extended:false });
 //middlewares
+app.set('view engine','ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); //TODO: is json required?
 app.use(session({resave: true, saveUninitialized: true, secret : "A sweet secret"}));
@@ -16,3 +17,4 @@ app.use(routes);
 
 //Listen on port provided or 3000
 app.listen(process.env.port || 3000);
+console.log("Listening on port 3000 localhost...");
