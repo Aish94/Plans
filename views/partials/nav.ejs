@@ -1,7 +1,54 @@
-<div>
-  <form method="get" action="/search">
-    <input type = "text" name = "user">
-    <input type="submit" value = "search">
-  </form>
-  <a href = "/logout">Logout</a>
-</div>
+<!-- JQUery Tether & Bootstrap CDNs -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous" defer></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous" defer></script>
+
+<!-- TODO : Add page value for all pages -->
+<!-- Custom JS -->
+<script src="/js/nav.js"></script>
+
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse mb-5">
+  
+  <!-- Menu Toggle Button -->
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Logo -->
+  <a class="navbar-brand" href="#"> <img src="/img/Logo.png"  width="50" height="50" /> </a>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    <!-- Menu Items -->
+    <ul class="navbar-nav mr-auto">
+
+    	<li class="nav-item" id = "Explore">
+        <a class="nav-link" href="/explore">Explore<span class="sr-only">(current)</span></a>
+      </li>
+
+      <li class="nav-item" id = "Profile">
+        <a class="nav-link" href="/profile">Profile</a>
+      </li>
+
+      <li class="nav-item" id = "Create">
+        <a class="nav-link" href="/event/create">Create</a>
+      </li>
+      
+    </ul>
+
+    <!-- Search Form -->
+    <form class="form-inline my-2 my-lg-0" method="get" action="/user/search">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" name = "user">
+      <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+    </form>
+
+    <!-- Logout option -->
+    <a class="nav-link" href = "/user/logout">Logout</a>
+
+  </div>
+</nav>

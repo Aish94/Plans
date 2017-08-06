@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+     <!-- Required meta tags -->   
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+
+    <title>Plans</title>
+     <style>
+       #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+  </head>
+  <body>
+
+    <% include partials/nav.ejs %>
+
+    <p>Click the button to get your coordinates.</p>
+
+    <button onclick="getLocation()">Try It</button>
+
+    <p id="demo"></p>
+
+    <div id="map"></div>
+
+    <script>
+      var x = document.getElementById("demo");
+      var map_global;
+      var marker_global;
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+      }
+    }
+
+    function showPosition(position) {
+      x.innerHTML = "Latitude: " + position.coords.latitude + 
+      "<br>Longitude: " + position.coords.longitude;
+      updateMap(position);
+    }
+
+    //Initialize map based on event location
+function initMap() 
+{
+  // Specify location coordinates
+  var lat = 0;
+  var long = 0;
+  var venue = new google.maps.LatLng(lat, long);
+
+  //Create map object
+  map_global = new google.maps.Map(document.getElementById('map'), {
+          center: venue,
+          scrollwheel: false,
+          zoom: 15
+  });
+
+  //Create marker on map
+  marker_global = new google.maps.Marker({
+         position: venue,
+         map: map_global
+  });
+}
+
+function updateMap(position){
+  var lat = position.coords.latitude;
+  var long = position.coords.longitude;
+  var venue = new google.maps.LatLng(lat, long);
+  marker_global.setPosition(venue);
+  map_global.setCenter(venue);
+}
+  </script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAocpxsHW7TozJJoqw51x26jX8mWokUQx0&callback=initMap"
+    async defer></script>
+
+  </body>
+</html>

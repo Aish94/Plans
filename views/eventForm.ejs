@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+
+    <title>Plans</title>
+
+    <!-- JQUery Tether & Bootstrap CDNs -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous" defer></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous" defer></script>
+
+    <!--Custom CSS-->
+    <link rel="stylesheet"  type="text/css"  href="/css/eventForm.css">
+    <!--Custom JS-->
+    <script src="/js/eventForm.js"></script>
+
+  </head>
+  <body>
+      <% include partials/nav.ejs %>
+      <h3  class="text-center" >Create an Event</h3>
+      <!-- Form component-->
+    <div class="container form p-5">
+
+      <form method="POST" action="/event/create">
+        <div class="form-group">
+          <label class="sr-only" for="name">Name</label>
+          <input type="text" name="name" id="name"  class="form-control"  placeholder = "Event Name" required>
+        </div>
+
+        <div class="form-group">     
+          <label class="sr-only" for="venue">Venue</label>
+          <input type="text" name="venue"  id="venue"  class="form-control"  placeholder = "Event Venue (Apt/Room no./Company name)" required>
+        </div>
+
+        <div class="form-group">
+          <label class="sr-only" for="address">Address</label>
+          <input id="address" class="controls form-control" type="text" placeholder="Address Search Box" name = "address" required>
+          <div id="map"></div>
+        </div>
+
+
+        <input type="hidden" name="latitude" id="latitude">
+        <input type="hidden" name="longitude" id="longitude">
+
+        <button type="submit" class="btn btn-primary active btn-block">Submit</button>
+      </form>
+
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAocpxsHW7TozJJoqw51x26jX8mWokUQx0&libraries=places&callback=initAutocomplete"
+         async defer></script>
+
+  </body>
+</html>

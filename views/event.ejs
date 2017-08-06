@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+     <!-- Required meta tags -->   
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+
+    <title>Plans</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"> <!--required for glyphicon-->
+
+    <link rel="stylesheet" type="text/css" href="/css/event.css">
+  </head>
+  <body>
+
+    <% include partials/nav.ejs %>
+
+    <input type='hidden' id='eventID' name='eventID' value='<%=event.ID%>' />
+
+    <div class = 'container'>
+
+      <div class='row'>
+        <!-- Event DP -->
+        <div  class="col-4">
+
+          <img id = 'dp_img' src='/img/<%=event.dp%>' class='profile'/>
+
+          <input class='dp' id ='uploadInput' type='file' name='dp' accept='image/*' /><br>
+          <button class="btn btn-primary upload-btn" id='uploadBtn' type="button">
+            <span class="fa fa-upload"></span>
+          </button>
+          <button type='button' class="btn btn-danger" id = 'deleteBtn'/>
+            <span class="fa fa-remove"></span>
+          </button>
+
+        </div>
+
+        <div class="col-8">
+          <h3  class="text-center" ><%=event.Name%></h3>
+          <h5  class="text-center" >Aishwarya Verghese</h5><!-- TODO: Replace with event owner and link to owner profile Also allow strangers to see created events but only public ones-->
+          <p class="text-center">Come join us in a melodic evening of classical music</p>
+        </div>
+
+      </div>
+
+      
+      <div class='row'>
+        <div  class="col-4">
+          <div id="map"></div>
+          <div class='lat' value = '<%=event.Latitude%>'></div>
+          <div class='long' value = '<%=event.Longitude%>'></div>
+          <address>
+            <%=event.Venue%><br>
+            <%=event.Address%> <!--TODO: Add option for Contact : phone numbers and email ID -->
+          </address>
+        </div>
+
+        <div class = "col-8">
+          <div class = "row">
+            <button type='button' class='btn btn-primary'/>
+              Attending
+            </button>
+            <button type='button' class='btn btn-primary'/>
+              Save
+            </button>
+          </div>
+          <div class = "row">
+            <h3 class="text-center" >Attendees</h3>
+          </div>
+          <div class = "row">
+            <h3 class="text-center" >Invitees</h3>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <script src="/js/event.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAocpxsHW7TozJJoqw51x26jX8mWokUQx0&callback=initMap"
+    async defer></script>
+
+  </body>
+</html>

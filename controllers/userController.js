@@ -1,118 +1,83 @@
 const express = require('express');
 const User = require('../models/user');
+const Event = require('../models/event');
+var authChecker = require('./authChecker');
 
 const router = express.Router();
 var user = new User();
+var event = new Event();
+
+//User must be logged in for these routes
+router.use(authChecker.auth);
 
 //Routes
-//Index Page
-router.get('/',function(req,res){
-  if(req.session.user)
-    res.redirect('/profile');
-  else
-    res.sendFile(__dirname + '/views/index.html');  //TODO: fix views outside controller
-});
-
-//User Login
-router.post('/login',function(req,res){
-    user.getUser(req.body.username,req.body.pwd, function(err, result){
-      if(err)
-      {
-        console.log("Error in retreiving data from the database: " + err);
-        res.send("Error in retreiving data from the database");
-      }
-      else {
-        if(result)
-        {
-          req.session.user = result['u']._id;
-          res.redirect('/profile');
-        }
-        else{
-          res.send("Fail!");
-        }
-      }
-
-    });
-
-});
-
-//User Registration
-router.post('/register',function(req,res){
-    user.addUser(req.body,function(err, result){
-      if(err)
-      {
-        console.log("Error in inserting in database." + err);
-        res.send("Error in inserting in database.");
-      }
-      else{
-        console.log("New user successfully added");
-        req.session.user = result;
-        res.redirect('/profile');
-      }
-    });
-});
-
-//View your profile - page after logging in or registering
-router.get('/profile',function(req,res){
-  if(req.session.user)
-  {
-    user.getUserData(req.session.user, function(err,result){
-      if(err)
-        console.log("Error retreiving user data");
-      else
-        res.render('profile',{me:true,user:result.properties});
-        //res.send("Hi "+  result.properties.firstName +"!");
-      });
-  }
-  else
-    res.redirect('/');
-});
-
-//View others profile
-router.get('/profile/:id',function(req,res){
-  if(req.session.user)
-  {
-    user.getUserData(parseInt(req.params.id), function(err,result){
-      if(err)
-        console.log("Error retreiving user data");
-      else if(result)
-      {
-        console.log("Request session user: " + req.session.user);
-        console.log("Result ID: " + result._id);
-        if(req.session.user == result._id)
-          res.render('profile',{me:true,user:result.properties});
-        else
-          res.render('profile',{me:false,user:result.properties});
-      }
-      else
-        res.send("No such person!");
-      });
-    }
-    else
-      res.redirect('/');
-});
-
 //Search for a user
 router.get('/search', function(req,res){
   console.log(req.query.user);
-  user.searchUser(req.query.user, function(err,result){
-    if(err)
-      console.log("Error retreiving user data: "+ err);
-    else
-    {
-        res.render('search',{query:req.query.user,users:result});
-        console.log("Successfully found: ");
-        console.log(result);
+  var searchDataPromise = Promise.all([ user.searchUser(req.query.user),
+                                      event.searchEvent(req.query.user)
+                                    ]);
+
+  searchDataPromise.then(function(data){
+      console.log("Successfully found: ");
+      console.log(data);
+      res.render('search',{query : req.query.user, users : data[0], events : data[1]});
+    }, function(err){
+      console.log("Error retreiving user data: "+ err); //TODO : Better way to display error to user 
+      res.send("Error retreiving user data");
     }
-    });
+  );
+});
+
+router.post('/addFriend', function(req,res){
+  if(req.fields.user_a != req.session.user)
+    res.send('Action not allowed');
+
+  console.log(JSON.stringify(req.fields))
+  console.log("Adding Friend - from controller.... a_id: " + req.fields.user_a + "b_id: " + req.fields.user_b);
+  user.addFriend(parseInt(req.fields.user_a),parseInt(req.fields.user_b),function(err,result){
+    if(err)
+    {
+      console.log("Error in adding friend: "+ err);
+      res.status(500).send({error : err});
+    }
+      else {
+        console.log("Successfully added friend!");
+        res.status(200).send({data: "success"});
+      }
+  });
+});
+
+router.post('/sendRequest', function(req,res){
+  console.log('In /sendRequest controller');
+    if(parseInt(req.fields.user_a) != req.session.user)
+    {  
+      res.send('Action not allowed');
+      return;
+    }
+
+  console.log(JSON.stringify(req.fields))
+  console.log("Adding Friend - from controller.... a_id: " + req.fields.user_a + "b_id: " + req.fields.user_b);
+  user.sendRequest(parseInt(req.fields.user_a),parseInt(req.fields.user_b),function(err,result){
+    if(err)
+    {
+      console.log("Error in adding friend: "+ err);
+      res.status(500).send({error : err});
+    }
+      else {
+        console.log("Successfully added friend!");
+        res.status(200).send({data: "success"});
+      }
+  });
 });
 
 //User logout
 router.get('/logout',function(req,res){
+
   req.session.destroy(function(err) {
-    // cannot access session here
-    res.send("Successfully logged out");
+    res.redirect('/');
   });
+
 });
 
 module.exports = router;

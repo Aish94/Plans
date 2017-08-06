@@ -1,0 +1,100 @@
+<!-- TODO : possibly change logo -->
+<!-- TODO : Page components -->
+<!-- TODO : Validate Form -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Plans</title>
+
+    <!-- JQUery Tether & Bootstrap CDNs -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous" defer></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous" defer></script>
+
+    <!--Custom CSS-->
+    <link rel="stylesheet"  type="text/css"  href="/css/index.css">
+  </head>
+  <body>
+
+    <!-- LOGO -->
+    <div class="my-5">
+      <div class="mx-auto logo">
+        <img src="img/logo.png" alt="logo" class="img-fluid"/>
+      </div>
+    </div>
+
+    </hr>
+
+    <!-- Form component-->
+    <div class="container form p-5">
+
+      <!--Login & Sign Up Nav Bar-->
+      <ul class="nav nav-tabs nav-fill" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" href="#login" data-toggle="tab" role="tab">Log In</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#signup" data-toggle="tab" role="tab">Sign Up</a>
+        </li>
+      </ul>
+
+      <!--Tab Content-->
+      <div class="tab-content py-5">
+
+        <!--Login form -->
+        <div id="login" class="tab-pane active" role="tabpanel"/>
+          <form method="POST" action="/login">
+
+            <div class="form-group">
+              <label class="sr-only" for="email">Email</label>
+              <input class="form-control" id = "email" type = "email" name = "username" placeholder = "Email ID">
+            </div>
+
+            <div class="form-group">
+              <label class="sr-only" for="pwd">Password</label>
+              <input class="form-control form-group" id = "pwd" type = "password" name = "pwd" placeholder = "Password">
+            </div>
+
+            <button type="submit" class="btn btn-primary active btn-block">Submit</button>
+
+          </form>
+        </div>
+
+        <!--Signup form -->
+        <div id="signup" class="tab-pane" role="tabpanel"/>
+          <form method="POST" action="/register">
+
+            <div class="form-group">
+              <label class="sr-only" for="firstName">First Name</label>
+              <input class="form-control" id = "firstName" type = "text" name = "firstName" placeholder = "First Name">
+            </div>
+
+            <div class="form-group">
+              <label class="sr-only" for="lastName">Last Name</label>
+              <input class="form-control" id = "lastName" type = "text" name = "lastName" placeholder = "Last Name">
+            </div>
+
+            <div class="form-group">
+              <label class="sr-only" for="signup_email">Email</label>
+              <input class="form-control" id = "signup_email" type = "email" name = "username" placeholder = "Email ID">
+            </div>
+
+            <div class="form-group">
+              <label class="sr-only" for="signup_pwd">Password</label>
+              <input class="form-control" id="signup_pwd" type = "password" name = "pwd" placeholder = "Password">
+            </div>
+
+            <button type="submit" class="btn btn-primary active btn-block">Submit</button>
+            
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>

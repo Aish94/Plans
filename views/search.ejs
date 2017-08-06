@@ -1,20 +1,42 @@
+<!-- TODO : Present Better -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <title>Plans</title>
+
   </head>
   <body>
-    <h3>Search</h3>
-    <form method="get" action="/search">
+
+    <% include partials/nav.ejs %>
+    
+    <!-- Seacrh Form -->
+    <form method="get" action="/user/search">
       <input type = "text" name = "user" <% if(query) {%> value = "<%= query %>" <%}%> >
       <input type="submit" value = "search">
     </form>
+
+    <!-- Search Results -->
+    <h3>Users</h3>
     <% if(users){ %>
-    <ul>
-      <% users.forEach(function(user){%>
-        <li> <a href="/profile/<%= user.id %>" ><%= user.firstName %> <%= user.lastName %></a> </li>
-      <% }); %>
-    <ul>
+      <ul>
+        <% users.forEach(function(user){%>
+          <li> <a href="/profile/view/<%= user.id %>" ><%= user.firstName %> <%= user.lastName %></a> </li> <!-- TODO : Better List Presentation with DP -->
+        <% }); %>
+      </ul>
     <% } %>
+
+    <h3>Events</h3>
+    <% if(events){ %>
+      <ul>
+        <% events.forEach(function(event){%>
+          <li> <a href="/event/view/<%= event.id %>" ><%= event.name %></a> </li> <!-- TODO : Better List Presentation with DP -->
+        <% }); %>
+      </ul>
+    <% } %>
+
   </body>
 </html>

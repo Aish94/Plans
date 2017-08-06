@@ -1,19 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <title>Plans</title>
+    <!--JQuery CDN -->
+    
+    <script src="/js/profile.js"></script>
   </head>
   <body>
     <% include partials/nav.ejs %>
     <h3>Profile</h3>
+
     <% if(me){ %>
       <p>Welcome <%= user.firstName %>!</p>
     <% } else { %>
       <p>Welcome to <%= user.firstName %>'s profile!</p>
     <% } %>
-    <!--<button type="" >Add Friend</button> <!--TODO: 1. Invisible if persons profile
-                                          2. A Friends check if friends
-                                          3. A request sent check if request sent
-                                          4. An Accept Friend Request button if invitation sent-->
+
+    <div id="dp">
+      <img src='' />
+      <form action='/profile/upload' method='post' encType='multipart/form-data'>
+        <input type='file' name='dp' accept='image/*' />
+        <input type='submit' />
+      </form>
+    </div>
+
+    <div id="relation">
+    <% if(!me){ %>
+      <% switch(relationship){
+        case "Friend" : %> <p> Friends </p> <% break;
+        case "Sent Request" : %> <p> Friend Request Sent </p> <% break;
+        case "Recieved Request" : %> <button type="button" onclick="addFriend('<%= viewer %>', '<%= viewee %>')" >Accept Friend Request</button> <% break;
+        case "Stranger" : %> <button type="button" onclick="sendRequest('<%= viewer %>', '<%= viewee %>')" >Add Friend</button>
+      <% } %>
+    <% } %>
+    </div>
+
+    <!-- Friends -->
+    <h4>Your Friends</h4>
+    <% if(friends.length != 0){ %>
+    <ul>
+      <% friends.forEach(function(friend){%>
+        <li> <a href="/profile/view/<%= friend.id %>" ><%= friend.firstName %> <%= friend.lastName %></a> </li>
+      <% }); %>
+    </ul>
+    <% } else { %>
+      <p> You have no friends at this time </p>
+    <% } %>
+
+    <!-- Only show this data if it's your profile or your friends -->
+    <% if( (me) || (relationship == "Friend") ){ %>
+      <!-- Created Events -->
+      <h4>Events Created By You</h4>
+      <% if(created_events.length != 0){ %>
+      <ul>
+        <% created_events.forEach(function(event){%>
+          <li> <a href="/event/view/<%= event.id %>" ><%= event.name %></a> </li>
+        <% }); %>
+      </ul>
+      <% } else { %>
+        <p> There are no events created by you at this time </p>
+      <% } %>
+
+      <!-- Attending Events -->
+      <h4>Upcoming Events you are attending</h4>
+      <% if(attending_events.length != 0){ %>
+      <ul>
+        <% attending_events.forEach(function(event){%>
+          <li> <a href="/event/view/<%= event.id %>" ><%= event.name %></a> </li>
+        <% }); %>
+      </ul>
+      <% } else { %>
+        <p> There are no events created by you at this time </p>
+      <% } %>
+
+      <!-- Invited Events -->
+      <h4>Upcoming Events you have been invited to</h4>
+      <% if(invited_events.length != 0){ %>
+      <ul>
+        <% invited_events.forEach(function(event){%>
+          <li> <a href="/event/view/<%= event.id %>" ><%= event.name %></a> </li>
+        <% }); %>
+      </ul>
+      <% } else { %>
+        <p> There are no events created by you at this time </p>
+      <% } %>
+
+      <!-- Attended Events -->
+      <h4>Past Events</h4>
+      <% if(attended_events.length != 0){ %>
+      <ul>
+        <% attended_events.forEach(function(event){%>
+          <li> <a href="/event/view/<%= event.id %>" ><%= event.name %></a> </li>
+        <% }); %>
+      </ul>
+      <% } else { %>
+        <p> There are no events created by you at this time </p>
+      <% } %>
+    <% } %>
+
   </body>
 </html>

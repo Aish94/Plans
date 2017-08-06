@@ -9,10 +9,13 @@
   "author": "Aishwarya Verghese & Hrishikesh Mulabagula",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.17.1",
     "ejs": "^2.5.6",
     "express": "^4.15.2",
+    "express-formidable": "^1.0.0",
     "express-session": "^1.15.2",
-    "neo4j": "^2.0.0-RC2"
+    "fs": "0.0.1-security",
+    "neo4j": "^2.0.0-RC2",
+    "path": "^0.12.7",
+    "uuid": "^3.1.0"
   }
 }
