@@ -6,76 +6,100 @@
     <meta charset="utf-8">
 
     <title>Plans</title>
-     <style>
-       #map {
-        height: 400px;
-        width: 100%;
-       }
+
+    <style>
+      .loader {
+          border: 16px solid #f3f3f3; /* Light grey */
+          border-top: 16px solid #3498db; /* Blue */
+          border-radius: 50%;
+          width: 120px;
+          height: 120px;
+          animation: spin 2s linear infinite;
+      }
+
+      @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+      }
     </style>
+
   </head>
   <body>
 
     <% include partials/nav.ejs %>
 
-    <p>Click the button to get your coordinates.</p>
+    <p id='progress'>Exploring...</p>
+    <div class="loader"></div>
 
-    <button onclick="getLocation()">Try It</button>
-
-    <p id="demo"></p>
-
-    <div id="map"></div>
-
-    <script>
-      var x = document.getElementById("demo");
-      var map_global;
-      var marker_global;
-    function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-      } else { 
-        x.innerHTML = "Geolocation is not supported by this browser.";
-      }
-    }
-
-    function showPosition(position) {
-      x.innerHTML = "Latitude: " + position.coords.latitude + 
-      "<br>Longitude: " + position.coords.longitude;
-      updateMap(position);
-    }
-
-    //Initialize map based on event location
-function initMap() 
-{
-  // Specify location coordinates
-  var lat = 0;
-  var long = 0;
-  var venue = new google.maps.LatLng(lat, long);
-
-  //Create map object
-  map_global = new google.maps.Map(document.getElementById('map'), {
-          center: venue,
-          scrollwheel: false,
-          zoom: 15
-  });
-
-  //Create marker on map
-  marker_global = new google.maps.Marker({
-         position: venue,
-         map: map_global
-  });
-}
-
-function updateMap(position){
-  var lat = position.coords.latitude;
-  var long = position.coords.longitude;
-  var venue = new google.maps.LatLng(lat, long);
-  marker_global.setPosition(venue);
-  map_global.setCenter(venue);
-}
-  </script>
-
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAocpxsHW7TozJJoqw51x26jX8mWokUQx0&callback=initMap"
-    async defer></script>
+    <ul id='event_list'>
+    </ul>
 
   </body>
+
+  <script>
+    $( document ).ready(function() {
+      console.log('In ready');
+    if (navigator.geolocation) {
+        console.log('In if');
+        navigator.geolocation.getCurrentPosition(getData);
+      } else { 
+        console.log('In else');
+        alert("Geolocation is not supported by this browser.");
+      }
+    });
+
+      function getData(position) {
+        var formData = new FormData();
+        formData.append('lat', position.coords.latitude);
+        formData.append('lon', position.coords.longitude);
+        console.log(position.coords.latitude);
+        console.log(position.coords.longitude);
+        $.ajax({
+          type: "POST",
+          url: "/explore",
+          data: formData,
+          // Tell jQuery not to process data or worry about content-type
+          contentType: false,
+          processData: false,
+          success: populatePage,
+          error: function ( data ) {
+            console.log('Error');
+            console.log( JSON.stringify(data) );
+          },
+        });
+      }
+
+      function populatePage(events){
+
+        $("#progress").hide();
+        $(".loader").hide();
+
+        var list = document.getElementById('event_list');
+
+        nearby_events = events[0];
+        friends_events = events[1];
+
+        nearby_events.forEach(function(event){
+
+          var $a = $("<a>", {href: "/event/view/" + event.id});
+          $a.html(event.name);
+          var $li = $("<li>");
+          $li.html($a);
+          $('#event_list').append($li);
+
+        });
+
+        friends_events.forEach(function(event){
+
+          var $a = $("<a>", {href: "/event/view/" + event.id});
+          $a.html(event.name);
+          var $li = $("<li>");
+          $li.html($a);
+          $('#event_list').append($li);
+
+        });
+        
+      }
+    </script>
+
 </html>

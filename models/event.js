@@ -8,13 +8,17 @@ Event.prototype.addEvent = function(event,owner,result_cb){
   //Add event Node
   event_id = null;
   db.cypher({
-      query: 'CREATE (e:Event {Name: {eventName}, dp: {eventImg}, Venue: {eventVenue}, Address:{eventAddress}, Latitude: {eventLatitude}, Longitude: {eventLongitude}}) RETURN e',
+      query: 'CREATE (e:Event {Name: {eventName}, dp: {eventImg}, Venue: {eventVenue}, Address:{eventAddress}, Latitude: {eventLatitude}, Longitude: {eventLongitude}, About: {eventDesc}}) '
+              + 'WITH e'
+              + 'CALL spatial.addNode("event_index",n) YIELD node'
+              + 'RETURN node',
       params: {
         eventName: event.name,
         eventVenue: event.venue,
         eventAddress: event.address,
-        eventLatitude: event.latitude,
-        eventLongitude: event.longitude,
+        eventLatitude: parseFloat(event.latitude),
+        eventLongitude: parseFloat(event.longitude),
+        eventDesc: event.about,
         eventImg: 'default.jpg'
               },
             }, function (err, results) {
@@ -113,6 +117,43 @@ Event.prototype.getEventOwner = function(event_id){
   });    
 }
 
+Event.prototype.getFriendsEvents = function(user_id){
+  console.log('In get friends events');
+  return new Promise(function(resolve, reject){
+    db.cypher(
+      {
+        query: 'Match(u:User)-[r:Friend]-(f:User)-[r2]->(e:Event) WHERE ID(u)={id} RETURN e,TYPE(r2)',
+        params: {
+        id: user_id,
+              },
+      }, 
+      function (err, results) 
+      {
+        if (err)
+        {
+          console.log('Error: ' + err);
+          return reject(err);
+        }
+        else {
+          console.log('No error');
+          events = []
+          results.forEach(function(event){
+
+            event_name = event["e"]["properties"]["Name"]
+            event_id = event["e"]["_id"]
+            friend_status = event["TYPE(r2)"]
+            data = {'id' : event_id, 'name' : event_name, 'status' : friend_status};
+            events.push(data);
+
+          });
+          console.log(events);
+          return resolve(events);
+        }
+      }
+    );
+  });    
+}
+
 Event.prototype.getEventDP = function(event_id){
 console.log('In get event DP');
   return new Promise(function(resolve, reject){
@@ -139,6 +180,50 @@ console.log('In get event DP');
             console.log(event_data);
           }
           return reject('No such event');
+        }
+      }
+    );
+  });    
+}
+
+Event.prototype.getNearEvents = function(lat, lon){
+  console.log('In get near events');
+  console.log('Controller lat : ' + lat);
+  console.log('Controller lon : ' + lon);
+  return new Promise(function(resolve, reject){
+    db.cypher(
+      {
+        query: 'CALL spatial.withinDistance("event_index",{lon : {location_lon}, lat : {location_lat}}, 50.0);',
+        params: {
+        location_lon: lon,
+        location_lat: lat,
+              },
+      }, 
+      function (err, results) 
+      {
+        if (err)
+        {
+          console.log('In error');
+          return reject(err);
+        }
+        else {
+          if(results.length == 0)
+            return reject('No events nearby');
+
+          console.log(results);
+          console.log("Next line");
+          events = []
+          results.forEach(function(result){
+              console.log(result);
+              event_id = result['node']._id;
+              event_name = result['node'].properties.Name;
+              event_distance = result['distance'];
+              event_data = {'id' : event_id, 'name' : event_name, 'distance' : event_distance};
+              events.push(event_data);
+          });
+          console.log(events);
+          return resolve(events);
+          
         }
       }
     );

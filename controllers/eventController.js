@@ -35,6 +35,15 @@ router.get('/create', function(req,res){
 
 //TODO: Redirect to created event page
 router.post('/create',function(req,res){
+  console.log(JSON.stringify(req.fields))
+  res.render('eventForm');
+
+  /*{
+    yyyy-mm-ddTHH:MM
+  "datetime":"2017-08-31T17:30",
+  "about":"Lot's of fresh fruits and vegetables!",
+}*/
+  /*
   event.addEvent(req.fields, req.session.user, function(err, result){
     if(err)
     {
@@ -50,7 +59,8 @@ router.post('/create',function(req,res){
         res.send("Fail!");
       }
     }
-  });
+  });*/
+
 });
 
 function uploadPicture(file_paths){

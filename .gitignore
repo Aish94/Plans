@@ -3,3 +3,4 @@ node_modules
 public/img/*
 !public/img/Logo.png
 public/tmp/*
+config.js

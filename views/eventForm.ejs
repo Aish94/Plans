@@ -1,3 +1,4 @@
+<!-- TODO: Validate all inputs -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -6,28 +7,30 @@
 
     <title>Plans</title>
 
-    <!-- JQUery Tether & Bootstrap CDNs -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous" defer></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous" defer></script>
+    <!--  Glyphicons -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"> <!--required for glyphicon-->
 
     <!--Custom CSS-->
     <link rel="stylesheet"  type="text/css"  href="/css/eventForm.css">
-    <!--Custom JS-->
-    <script src="/js/eventForm.js"></script>
 
   </head>
   <body>
+
       <% include partials/nav.ejs %>
       <h3  class="text-center" >Create an Event</h3>
       <!-- Form component-->
     <div class="container form p-5">
 
-      <form method="POST" action="/event/create">
+      <form method="POST" action="/event/create" id="eventForm">
         <div class="form-group">
           <label class="sr-only" for="name">Name</label>
           <input type="text" name="name" id="name"  class="form-control"  placeholder = "Event Name" required>
+        </div>
+
+        <!-- TODO: Date and time restrictions -->
+        <div class="form-group">  
+          <label class="sr-only" for="datetime">Date and Time</label> 
+          <input type='datetime-local' name = 'datetime' class="form-control" />
         </div>
 
         <div class="form-group">     
@@ -41,6 +44,10 @@
           <div id="map"></div>
         </div>
 
+        <div class="form-group">
+          <label for="about">Brief Desciption:</label>
+          <textarea class="form-control text" rows="5" id="about" name="about" form="eventForm"></textarea>
+        </div>
 
         <input type="hidden" name="latitude" id="latitude">
         <input type="hidden" name="longitude" id="longitude">
@@ -50,6 +57,8 @@
 
     </div>
 
+    <!--Custom JS-->
+    <script src="/js/eventForm.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAocpxsHW7TozJJoqw51x26jX8mWokUQx0&libraries=places&callback=initAutocomplete"
          async defer></script>
 

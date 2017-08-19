@@ -40,3 +40,5 @@ console.log("Listening on port 3000 localhost...");
 //TODO: Create an index for username and query accordingly
 //TODO: When searching for people and events return results in parts
 //TODO: Similarly return Friends, Attendees, etc. in parts
+//TODO: Hide API Keys
+//TODO: Index events by date and time??
